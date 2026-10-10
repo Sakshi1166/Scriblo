@@ -25,7 +25,7 @@ export const RemoteCursors: React.FC<RemoteCursorsProps> = ({ users, currentUser
             <svg
               className="w-5 h-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
               viewBox="0 0 24 24"
-              fill={user.color || '#00f0ff'}
+              fill={user.color || '#f5b942'}
               stroke="#0a0b10"
               strokeWidth="1.5"
             >
@@ -36,7 +36,7 @@ export const RemoteCursors: React.FC<RemoteCursorsProps> = ({ users, currentUser
             <div
               className="px-2 py-0.5 rounded text-[11px] font-mono font-bold whitespace-nowrap shadow-md ml-3 -mt-2 border border-black/40"
               style={{
-                backgroundColor: user.color || '#00f0ff',
+                backgroundColor: user.color || '#f5b942',
                 color: '#08090d',
               }}
             >

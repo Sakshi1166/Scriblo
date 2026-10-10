@@ -1,14 +1,19 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from './types'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://fansyzdnhbqshcmkcumj.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZhbnN5emRuaGJxc2hjbWtjdW1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3ODQzNjgsImV4cCI6MjEwNjM2MDM2OH0.rejWWHLQWmCG9DZ7PabYPeszspUiIyrg1OG9q8y0GI8'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase URL or Anon Key is missing. Check your environment variables.')
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
+
+if (!isSupabaseConfigured) {
+  console.warn('Supabase is not configured. Copy .env.example to .env to enable rooms, authentication, and collaboration.')
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+export const supabase = createClient<Database>(
+  supabaseUrl || 'https://missing-configuration.supabase.co',
+  supabaseAnonKey || 'missing-configuration',
+  {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
@@ -19,4 +24,5 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
       eventsPerSecond: 20,
     },
   },
-})
+  },
+)

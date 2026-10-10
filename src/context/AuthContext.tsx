@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { isSupabaseConfigured, supabase } from '../lib/supabase'
 
 interface AuthContextType {
   user: User | null
@@ -59,6 +59,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     let mounted = true
 
     async function initAuth() {
+      if (!isSupabaseConfigured) {
+        if (mounted) {
+          setLoading(false)
+        }
+        return
+      }
+
       try {
         const { data: { session: existingSession } } = await supabase.auth.getSession()
         
@@ -89,6 +96,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     initAuth()
+
+    if (!isSupabaseConfigured) {
+      return () => {
+        mounted = false
+      }
+    }
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, currentSession) => {
       if (mounted) {

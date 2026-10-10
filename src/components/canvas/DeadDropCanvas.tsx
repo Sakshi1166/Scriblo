@@ -209,7 +209,7 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
         [payload.userId]: {
           userId: payload.userId,
           name: payload.name || 'Operative',
-          color: payload.color || '#00f0ff',
+          color: payload.color || '#f5b942',
           joinedAt: prev[payload.userId]?.joinedAt || Date.now(),
           cursor: { x: payload.x, y: payload.y },
         },
@@ -231,7 +231,7 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
             users.push({
               userId: p.userId,
               name: p.name || 'Operative',
-              color: p.color || '#00f0ff',
+              color: p.color || '#f5b942',
               joinedAt: p.joinedAt || Date.now(),
             })
           }
@@ -444,7 +444,7 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
       onPointerMove={handlePointerMove}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      className="relative w-screen h-screen overflow-hidden bg-[#0a0c13]"
+      className="relative w-screen h-screen overflow-hidden bg-black"
     >
       <RemoteCursors users={remoteCursorList} currentUserId={currentUserId} />
 
@@ -453,7 +453,7 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
       </div>
 
       {isUploading && (
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-40 bg-cyan-950/90 border border-cyan-500/80 px-4 py-2 rounded-xl text-cyan-300 font-mono text-xs flex items-center gap-2 shadow-lg backdrop-blur-md animate-pulse">
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-40 bg-amber-950/90 border border-amber-500/80 px-4 py-2 rounded-xl text-amber-300 font-mono text-xs flex items-center gap-2 shadow-lg backdrop-blur-md animate-pulse">
           <Upload className="w-4 h-4 animate-bounce" />
           <span>Uploading asset to ephemeral vault...</span>
         </div>
@@ -461,8 +461,8 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
 
       <div className="absolute bottom-4 right-4 z-30 pointer-events-none flex items-center gap-2">
         <div className="bg-[#0c0e17]/85 backdrop-blur-md border border-slate-800/80 rounded-lg px-2.5 py-1.5 shadow-md flex items-center gap-1.5 text-xs font-mono">
-          <Radio className={`w-3.5 h-3.5 ${isConnected ? 'text-emerald-400 animate-pulse' : 'text-red-400'}`} />
-          <span className={isConnected ? 'text-emerald-300' : 'text-red-300'}>
+          <Radio className={`w-3.5 h-3.5 ${isConnected ? 'text-yellow-400 animate-pulse' : 'text-amber-400'}`} />
+          <span className={isConnected ? 'text-yellow-300' : 'text-amber-300'}>
             {isConnected ? 'Live' : 'Connecting...'}
           </span>
         </div>
@@ -471,9 +471,9 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
           {saveStatus === 'saving' ? (
             <><Cloud className="w-3.5 h-3.5 text-amber-400 animate-spin" /><span className="text-amber-300">Syncing...</span></>
           ) : saveStatus === 'error' ? (
-            <><AlertCircle className="w-3.5 h-3.5 text-red-400" /><span className="text-red-400">Save Error</span></>
+            <><AlertCircle className="w-3.5 h-3.5 text-amber-400" /><span className="text-amber-400">Save Error</span></>
           ) : (
-            <><CloudCheck className="w-3.5 h-3.5 text-cyan-400" /><span className="text-slate-400">Synced</span></>
+            <><CloudCheck className="w-3.5 h-3.5 text-amber-400" /><span className="text-slate-400">Synced</span></>
           )}
         </div>
       </div>

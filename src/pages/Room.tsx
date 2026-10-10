@@ -191,8 +191,8 @@ export const RoomPage: React.FC = () => {
   // Loading Screen
   if (loading || authLoading) {
     return (
-      <div className="min-h-screen bg-[#08090d] flex flex-col items-center justify-center p-4">
-        <Loader2 className="w-8 h-8 text-cyan-400 animate-spin mb-4" />
+      <div className="air-room min-h-screen bg-black flex flex-col items-center justify-center p-4">
+        <Loader2 className="w-8 h-8 text-amber-400 animate-spin mb-4" />
         <span className="font-mono text-xs uppercase tracking-widest text-slate-400">
           Decrypting Dead-Drop Channel...
         </span>
@@ -208,11 +208,11 @@ export const RoomPage: React.FC = () => {
   // Passcode Lock Gate
   if (isPasscodeLocked) {
     return (
-      <div className="min-h-screen bg-[#08090d] flex items-center justify-center p-4 relative">
+      <div className="air-room min-h-screen bg-black flex items-center justify-center p-4 relative">
         <div className="absolute inset-0 scanlines opacity-40 pointer-events-none" />
-        <div className="relative z-10 max-w-md w-full bg-[#0d101a] border border-cyan-500/30 rounded-2xl p-8 backdrop-blur-xl shadow-2xl text-center">
-          <div className="mx-auto w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mb-4">
-            <Lock className="w-6 h-6 text-cyan-400" />
+        <div className="relative z-10 max-w-md w-full bg-[#0d101a] border border-amber-500/30 rounded-2xl p-8 backdrop-blur-xl shadow-2xl text-center">
+          <div className="mx-auto w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4">
+            <Lock className="w-6 h-6 text-amber-400" />
           </div>
 
           <h2 className="text-xl font-mono font-bold text-white mb-1">RESTRICTED VAULT</h2>
@@ -231,19 +231,19 @@ export const RoomPage: React.FC = () => {
                 }}
                 placeholder="Passphrase"
                 autoFocus
-                className="w-full px-4 py-3 rounded-xl bg-[#06070a] border border-slate-800 text-center font-mono text-sm text-white tracking-widest focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
+                className="w-full px-4 py-3 rounded-xl bg-[#06070a] border border-slate-800 text-center font-mono text-sm text-white tracking-widest focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
               />
             </div>
 
             {passcodeError && (
-              <p className="text-xs font-mono text-red-400">
+              <p className="text-xs font-mono text-amber-400">
                 Invalid passphrase. Access denied.
               </p>
             )}
 
             <button
               type="submit"
-              className="w-full py-3 px-4 rounded-xl font-mono text-sm font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 px-4 rounded-xl font-mono text-sm font-semibold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-[0_0_20px_rgba(245,185,66,0.3)] transition-all flex items-center justify-center gap-2"
             >
               <span>ACCESS DROP</span>
               <ArrowRight className="w-4 h-4" />
@@ -257,7 +257,7 @@ export const RoomPage: React.FC = () => {
 
   // Active Canvas Room
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#08090d]">
+    <div className="air-room relative w-screen h-screen overflow-hidden bg-black">
       {/* Glitch Disintegration Overlay during self-destruction */}
       {isGlitching && (
         <GlitchOverlay

@@ -17,8 +17,8 @@ export const BurnModal: React.FC<BurnModalProps> = ({
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="relative max-w-md w-full bg-[#0d0f17] border border-red-500/40 rounded-2xl p-6 shadow-[0_0_40px_rgba(255,42,95,0.25)] text-center">
+    <div className="air-burn-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+      <div className="relative max-w-md w-full bg-[#0d0f17] border border-amber-500/40 rounded-2xl p-6 shadow-[0_0_40px_rgba(245,185,66,0.18)] text-center">
         <button
           onClick={onClose}
           disabled={isBurning}
@@ -27,12 +27,12 @@ export const BurnModal: React.FC<BurnModalProps> = ({
           <X className="w-5 h-5" />
         </button>
 
-        <div className="mx-auto w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-4">
-          <Flame className="w-7 h-7 text-red-500 animate-pulse" />
+        <div className="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4">
+          <Flame className="w-7 h-7 text-amber-500 animate-pulse" />
         </div>
 
         <h2 className="text-xl font-mono font-bold text-white mb-2 flex items-center justify-center gap-2">
-          <AlertOctagon className="w-5 h-5 text-red-400" />
+          <AlertOctagon className="w-5 h-5 text-amber-400" />
           <span>CONFIRM IMMEDIATE BURN</span>
         </h2>
 
@@ -51,7 +51,7 @@ export const BurnModal: React.FC<BurnModalProps> = ({
           <button
             onClick={onConfirm}
             disabled={isBurning}
-            className="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-mono text-sm font-semibold shadow-[0_0_20px_rgba(255,42,95,0.4)] transition-all flex items-center justify-center gap-2"
+            className="flex-1 py-2.5 px-4 rounded-xl bg-amber-400 hover:bg-yellow-300 text-black font-mono text-sm font-semibold shadow-[0_0_20px_rgba(245,185,66,0.25)] transition-all flex items-center justify-center gap-2"
           >
             {isBurning ? (
               <span>Purging...</span>
