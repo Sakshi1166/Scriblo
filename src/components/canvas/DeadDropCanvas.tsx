@@ -44,6 +44,7 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
   const [isUploading, setIsUploading] = useState(false)
   const [isConnected, setIsConnected] = useState(false)
   const [cursorUsers, setCursorUsers] = useState<Record<string, PresenceUser>>({})
+  const [canvasGeneration, setCanvasGeneration] = useState(0)
 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isApplyingRemoteChange = useRef(false)
@@ -340,15 +341,25 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
   // Restore tldraw's viewport when a backgrounded tab becomes visible again.
   useEffect(() => {
     let refreshTimers: ReturnType<typeof setTimeout>[] = []
+    let recoveryAttempted = false
 
     const refreshViewport = () => {
       if (document.visibilityState !== 'visible') return
 
+      recoveryAttempted = false
       refreshTimers.forEach(clearTimeout)
       refreshTimers = [0, 50, 250].map((delay) =>
         setTimeout(() => {
           if (editorRef.current && containerRef.current) {
             editorRef.current.updateViewportScreenBounds(containerRef.current)
+          }
+          if (
+            !recoveryAttempted &&
+            containerRef.current &&
+            !containerRef.current.querySelector('[data-testid="canvas"]')
+          ) {
+            recoveryAttempted = true
+            setCanvasGeneration((generation) => generation + 1)
           }
         }, delay),
       )
@@ -358,13 +369,16 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
     if (containerRef.current) resizeObserver.observe(containerRef.current)
     document.addEventListener('visibilitychange', refreshViewport)
     window.addEventListener('pageshow', refreshViewport)
+    window.addEventListener('focus', refreshViewport)
     window.addEventListener('resize', refreshViewport)
+    refreshViewport()
 
     return () => {
       refreshTimers.forEach(clearTimeout)
       resizeObserver.disconnect()
       document.removeEventListener('visibilitychange', refreshViewport)
       window.removeEventListener('pageshow', refreshViewport)
+      window.removeEventListener('focus', refreshViewport)
       window.removeEventListener('resize', refreshViewport)
     }
   }, [])
@@ -481,7 +495,7 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
       <RemoteCursors users={remoteCursorList} currentUserId={currentUserId} />
 
       <div className="absolute inset-0">
-        <Tldraw autoFocus onMount={handleMount} />
+        <Tldraw key={canvasGeneration} autoFocus onMount={handleMount} />
       </div>
 
       {isUploading && (
