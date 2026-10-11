@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Flame, Share2, Users, Clock, Check, Home } from 'lucide-react'
+import { Flame, Share2, Users, Clock, Home } from 'lucide-react'
 import type { PresenceUser } from '../../lib/types'
 
 interface CountdownHUDProps {
@@ -20,8 +20,6 @@ export const CountdownHUD: React.FC<CountdownHUDProps> = ({
   onBurnClick,
   isCreator,
 }) => {
-  const [copied, setCopied] = useState(false)
-
   const formatTime = (totalSeconds: number) => {
     if (totalSeconds <= 0) return '00:00:00'
     const hours = Math.floor(totalSeconds / 3600)
@@ -34,10 +32,12 @@ export const CountdownHUD: React.FC<CountdownHUDProps> = ({
     ].join(':')
   }
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+    } catch (error) {
+      console.error('Failed to copy room link:', error)
+    }
   }
 
   const isUrgent = secondsRemaining > 0 && secondsRemaining <= 60
@@ -114,8 +114,8 @@ export const CountdownHUD: React.FC<CountdownHUDProps> = ({
           className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-amber-400 text-xs font-mono transition-colors"
           title="Copy Link to Clipboard"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-yellow-400" /> : <Share2 className="w-3.5 h-3.5" />}
-          <span className="hidden sm:inline">{copied ? 'Copied' : 'Share'}</span>
+          <Share2 className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Share</span>
         </button>
 
         {/* Burn Now Kill Switch */}
