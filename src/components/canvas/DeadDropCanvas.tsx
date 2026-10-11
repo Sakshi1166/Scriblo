@@ -337,6 +337,28 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
     storeListenerCleanupRef.current = cleanup
   }, [initialCanvasState, scheduleSave, enqueueChanges])
 
+  // Restore tldraw's viewport when a backgrounded tab becomes visible again.
+  useEffect(() => {
+    const refreshViewport = () => {
+      if (document.visibilityState !== 'visible' || !editorRef.current || !containerRef.current) return
+      requestAnimationFrame(() => {
+        if (editorRef.current && containerRef.current) {
+          editorRef.current.updateViewportScreenBounds(containerRef.current)
+        }
+      })
+    }
+
+    document.addEventListener('visibilitychange', refreshViewport)
+    window.addEventListener('pageshow', refreshViewport)
+    window.addEventListener('resize', refreshViewport)
+
+    return () => {
+      document.removeEventListener('visibilitychange', refreshViewport)
+      window.removeEventListener('pageshow', refreshViewport)
+      window.removeEventListener('resize', refreshViewport)
+    }
+  }, [])
+
   // ─── Pointer move → cursor broadcast (throttled ~25fps) ───────
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isChannelReady.current || !channelRef.current || !containerRef.current) return
