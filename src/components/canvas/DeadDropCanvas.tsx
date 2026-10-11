@@ -48,7 +48,6 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isApplyingRemoteChange = useRef(false)
   const isChannelReady = useRef(false)      // Only true after SUBSCRIBED
-  const lastLocalEditTime = useRef(0)
   const lastCursorSendTime = useRef(0)
 
   // Batched stroke broadcast: accumulate changes and flush every 50ms
@@ -111,7 +110,6 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
 
   // Debounced database save function (3 seconds)
   const scheduleSave = useCallback(() => {
-    lastLocalEditTime.current = Date.now()
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current)
     }
@@ -252,25 +250,6 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
         })
       }
     })
-
-    // ── 6. Postgres changes fallback for late-joining peers ──
-    channel.on(
-      'postgres_changes',
-      { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `id=eq.${roomId}` },
-      (payload) => {
-        const elapsed = Date.now() - lastLocalEditTime.current
-        if (elapsed > 4000 && editorRef.current && payload.new && 'canvas_state' in payload.new) {
-          const remote = payload.new.canvas_state as any
-          if (remote && typeof remote === 'object' && Object.keys(remote).length > 0) {
-            try {
-              isApplyingRemoteChange.current = true
-              loadSnapshot(editorRef.current.store, remote)
-            } catch { /* ignore */ }
-            finally { isApplyingRemoteChange.current = false }
-          }
-        }
-      }
-    )
 
     // ── Subscribe LAST after all listeners are registered ──
     channel.subscribe(async (status) => {
