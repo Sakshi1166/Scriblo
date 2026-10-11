@@ -339,20 +339,30 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
 
   // Restore tldraw's viewport when a backgrounded tab becomes visible again.
   useEffect(() => {
+    let refreshTimers: ReturnType<typeof setTimeout>[] = []
+
     const refreshViewport = () => {
-      if (document.visibilityState !== 'visible' || !editorRef.current || !containerRef.current) return
-      requestAnimationFrame(() => {
-        if (editorRef.current && containerRef.current) {
-          editorRef.current.updateViewportScreenBounds(containerRef.current)
-        }
-      })
+      if (document.visibilityState !== 'visible') return
+
+      refreshTimers.forEach(clearTimeout)
+      refreshTimers = [0, 50, 250].map((delay) =>
+        setTimeout(() => {
+          if (editorRef.current && containerRef.current) {
+            editorRef.current.updateViewportScreenBounds(containerRef.current)
+          }
+        }, delay),
+      )
     }
 
+    const resizeObserver = new ResizeObserver(refreshViewport)
+    if (containerRef.current) resizeObserver.observe(containerRef.current)
     document.addEventListener('visibilitychange', refreshViewport)
     window.addEventListener('pageshow', refreshViewport)
     window.addEventListener('resize', refreshViewport)
 
     return () => {
+      refreshTimers.forEach(clearTimeout)
+      resizeObserver.disconnect()
       document.removeEventListener('visibilitychange', refreshViewport)
       window.removeEventListener('pageshow', refreshViewport)
       window.removeEventListener('resize', refreshViewport)
