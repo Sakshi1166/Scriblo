@@ -132,8 +132,8 @@ Copy-Item .env.example .env
 Set the following values in `.env`:
 
 ```env
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-publishable-or-anon-key
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-publishable-or-anon-key
 ```
 
 The `.env` file is ignored by Git. Never commit it or place a service-role key in a Vite environment variable.
@@ -217,7 +217,7 @@ npm run preview  # Preview the production build locally
 
 Scriblo is a temporary collaboration prototype and should not be described as providing guaranteed cryptographic deletion without additional backend work.
 
-- `SUPABASE_ANON_KEY` or a publishable key is intentionally safe to expose in browser code, but it must be protected by correct RLS, Storage, and Realtime policies.
+- `VITE_SUPABASE_ANON_KEY` or a publishable key is intentionally safe to expose in browser code, but it must be protected by correct RLS, Storage, and Realtime policies.
 - Never expose a Supabase service-role key in frontend code, `.env.example`, Git, or deployment client variables.
 - Room passcodes are currently stored and compared through the client-side room flow. They should not be treated as strong authentication or encryption.
 - The browser countdown is not a server-side deletion guarantee.
@@ -230,7 +230,7 @@ Scriblo is a temporary collaboration prototype and should not be described as pr
 
 Before deploying:
 
-- Configure `SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in the hosting provider’s environment settings.
+- Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in the hosting provider’s environment settings.
 - Do not upload `.env`.
 - Confirm `.env` and other credential patterns remain ignored by Git.
 - Enable anonymous authentication if required.
