@@ -134,9 +134,10 @@ Set the following values in `.env`:
 ```env
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-publishable-or-anon-key
+VITE_TLDRAW_LICENSE_KEY=your-tldraw-license-key
 ```
 
-The `.env` file is ignored by Git. Never commit it or place a service-role key in a Vite environment variable.
+The `.env` file is ignored by Git. Never commit it or place a service-role key in a Vite environment variable. Obtain a tldraw license key from tldraw and configure it in Vercel for Production, Preview, and Development. Without it, tldraw intentionally blanks the editor after five seconds in production.
 
 ### Start the development server
 

@@ -463,7 +463,11 @@ export const DeadDropCanvas = forwardRef<DeadDropCanvasHandle, DeadDropCanvasPro
       <RemoteCursors users={remoteCursorList} currentUserId={currentUserId} />
 
       <div className="absolute inset-0">
-        <Tldraw autoFocus onMount={handleMount} />
+        <Tldraw
+          licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
+          autoFocus
+          onMount={handleMount}
+        />
       </div>
 
       {isUploading && (
